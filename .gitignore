@@ -9,6 +9,7 @@ composer.lock
 
 .idea/
 bin
+.phpunit.result.cache
 
 # ignore generated stuff
 docs/docs.md.htm

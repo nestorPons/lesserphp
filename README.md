@@ -1,7 +1,8 @@
 [![Build Status](https://travis-ci.org/MarcusSchwarz/lesserphp.svg?branch=master)](https://travis-ci.org/MarcusSchwarz/lesserphp) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/MarcusSchwarz/lesserphp/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/MarcusSchwarz/lesserphp/?branch=master) [![Coverage Status](https://coveralls.io/repos/github/MarcusSchwarz/lesserphp/badge.svg?branch=master)](https://coveralls.io/github/MarcusSchwarz/lesserphp?branch=master)
 
-# lesserphp v0.5.1
+# lesserphp dev-master
 ### <http://github.com/MarcusSchwarz/lesserphp>
+**Please note:** Please bear in mind, the master branch is *not* up-to-date with the release branch, which is 0.6-dev. Bug fixes should go to branch 0.6-dev (php7.2 and greater) or 0.5-dev (php5.6 to php7.4). Thank you!
 
 `lesserphp` is a compiler for LESS written in PHP. It is based on lessphp bei leafo.
 The documentation is great,
