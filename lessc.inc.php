@@ -2577,7 +2577,7 @@ class lessc_parser {
 		$this->count = 0;
 		$this->line = 1;
 
-		$this->env = null; // block stack
+		$this->env =  new \stdClass; // block stack
 		$this->buffer = $this->writeComments ? $buffer : $this->removeComments($buffer);
 		$this->pushSpecialBlock("root");
 		$this->eatWhiteDefault = true;
@@ -2597,7 +2597,7 @@ class lessc_parser {
 			$this->throwError();
 
 		// TODO report where the block was opened
-		if ( !property_exists($this->env, 'parent') || !is_null($this->env->parent) )
+		if ( !property_exists($this->env, 'parent') && !is_null($this->env->parent) )
 			throw new \Exception('parse error: unclosed block');
 
 		return $this->env;
@@ -3258,6 +3258,8 @@ class lessc_parser {
 	// arguments are separated by , unless a ; is in the list, then ; is the
 	// delimiter.
 	protected function argumentDef(&$args, &$isVararg) {
+		$value = null;
+		$rhs = null;
 		$s = $this->seek();
 		if (!$this->literal('(')) return false;
 
@@ -3692,6 +3694,7 @@ class lessc_parser {
 	}
 
 	protected function genericList(&$out, $parseItem, $delim="", $flatten=true) {
+		$value = null;
 		$s = $this->seek();
 		$items = array();
 		while ($this->$parseItem($value)) {
@@ -3736,7 +3739,7 @@ class lessc_parser {
 		if ($eatWhitespace === null) $eatWhitespace = $this->eatWhiteDefault;
 
 		$r = '/'.$regex.($eatWhitespace && !$this->writeComments ? '\s*' : '').'/Ais';
-		if (preg_match($r, $this->buffer, $out, null, $this->count)) {
+		if (preg_match($r, $this->buffer, $out, 0, $this->count)) {
 			$this->count += strlen($out[0]);
 			if ($eatWhitespace && $this->writeComments) $this->whitespace();
 			return true;
@@ -3748,7 +3751,7 @@ class lessc_parser {
 	protected function whitespace() {
 		if ($this->writeComments) {
 			$gotWhite = false;
-			while (preg_match(self::$whitePattern, $this->buffer, $m, null, $this->count)) {
+			while (preg_match(self::$whitePattern, $this->buffer, $m, 0, $this->count)) {
 				if (isset($m[1]) && empty($this->seenComments[$this->count])) {
 					$this->append(array("comment", $m[1]));
 					$this->seenComments[$this->count] = true;
@@ -3767,7 +3770,7 @@ class lessc_parser {
 	protected function peek($regex, &$out = null, $from=null) {
 		if (is_null($from)) $from = $this->count;
 		$r = '/'.$regex.'/Ais';
-		$result = preg_match($r, $this->buffer, $out, null, $from);
+		$result = preg_match($r, $this->buffer, $out, 0, $from);
 
 		return $result;
 	}
